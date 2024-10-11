@@ -32,11 +32,12 @@ jobs:
     - name: Run server with Make and sleep
       run: |
         . venv/bin/activate
-        make run &
+        make run > server_log.txt 2>&1 &
         sleep 30
+    - name: Print server log
+      run: cat server_log.txt
     - name: Verify server is running
       run: |
         curl --fail http://localhost:3000 || exit 1
-    - name: Print server log
-      run: cat server_log.txt
+  
 
