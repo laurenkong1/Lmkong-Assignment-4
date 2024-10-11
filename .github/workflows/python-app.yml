@@ -37,3 +37,6 @@ jobs:
     - name: Verify server is running
       run: |
         curl --fail http://localhost:3000 || exit 1
+    - name: Print server log
+      run: cat server_log.txt
+
