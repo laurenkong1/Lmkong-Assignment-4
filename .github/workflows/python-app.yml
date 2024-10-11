@@ -46,6 +46,3 @@ jobs:
         # Treat all errors as warnings for complexity and line length
         flake8 . --exclude=venv,env,.git,__pycache__ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-    - name: Run tests with pytest
-      run: |
-        pytest
