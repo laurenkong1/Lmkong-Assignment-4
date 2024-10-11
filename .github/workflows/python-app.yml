@@ -33,7 +33,7 @@ jobs:
       run: |
         . venv/bin/activate
         make run &
-        sleep 10
+        sleep 30
     - name: Verify server is running
       run: |
         curl --fail http://localhost:3000 || exit 1
