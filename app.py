@@ -8,7 +8,6 @@ import nltk
 from nltk.corpus import stopwords
 import ssl
 
-# Disable SSL verification to fix SSL error
 try:
     _create_unverified_https_context = ssl._create_unverified_context
 except AttributeError:
@@ -20,11 +19,10 @@ nltk.download('stopwords')
 
 app = Flask(__name__)
 
-# Fetch dataset and initialize vectorizer and LSA components
 newsgroups = fetch_20newsgroups(subset='all')
 vectorizer = TfidfVectorizer(stop_words=stopwords.words('english'))
 X = vectorizer.fit_transform(newsgroups.data)
-svd = TruncatedSVD(n_components=10)  # Adjust n_components as needed
+svd = TruncatedSVD(n_components=50) 
 X_reduced = svd.fit_transform(X)
 
 def search_engine(query):
@@ -33,22 +31,17 @@ def search_engine(query):
         return [], [], []
 
     try:
-        # Log that we're in the search_engine function
         print("search_engine called with query:", query)
         
-        # Vectorize the query
         query_vec = vectorizer.transform([query])
-        print("Vectorized query shape:", query_vec.shape)  # Log the shape of the query vector
+        print("Vectorized query shape:", query_vec.shape)
 
-        # Reduce dimensionality
         query_reduced = svd.transform(query_vec)
-        print("Reduced query shape:", query_reduced.shape)  # Log the shape of the reduced query
+        print("Reduced query shape:", query_reduced.shape)
 
-        # Compute cosine similarities
         similarities = cosine_similarity(query_reduced, X_reduced)[0]
         print("Cosine similarities:", similarities)
 
-        # Get the top 5 similar documents
         top_indices = np.argsort(similarities)[-5:][::-1]
         documents = [newsgroups.data[i] for i in top_indices]
         top_similarities = [similarities[i] for i in top_indices]
