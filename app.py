@@ -7,6 +7,7 @@ import numpy as np
 import nltk
 from nltk.corpus import stopwords
 import ssl
+import traceback
 
 try:
     _create_unverified_https_context = ssl._create_unverified_context
